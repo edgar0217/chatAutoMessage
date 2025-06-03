@@ -1,0 +1,40 @@
+{
+  "name": "base-bailey-asociacionnav",
+  "version": "1.0.0",
+  "description": "Proyecto combinado: bot-whatsapp + express con Sequelize",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "dev": "nodemon app.js",
+    "prestart": "npx eslint . --no-ignore",
+    "pre-copy": "cd .. && npm run copy.lib base-baileys-memory"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@bot-whatsapp/bot": "latest",
+    "@bot-whatsapp/cli": "latest",
+    "@bot-whatsapp/database": "latest",
+    "@bot-whatsapp/portal": "latest",
+    "@bot-whatsapp/provider": "latest",
+    "@whiskeysockets/baileys": "6.5.0",
+    "axios": "^1.9.0",
+    "axios-retry": "^4.5.0",
+    "cache-manager": "5.2.4",
+    "dotenv": "^16.5.0",
+    "ejs": "^3.1.10",
+    "express": "^5.1.0",
+    "node-fetch": "^3.3.2",
+    "p-limit": "^6.2.0",
+    "pg": "^8.16.0",
+    "pg-hstore": "^2.3.4",
+    "sequelize": "^6.37.7",
+    "wa-sticker-formatter": "4.4.4"
+  },
+  "devDependencies": {
+    "eslint": "^8.52.0",
+    "eslint-plugin-bot-whatsapp": "latest",
+    "nodemon": "^3.1.10"
+  }
+}

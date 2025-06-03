@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Asociaciones</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <body class="bg-gray-100 min-h-screen">
+    <%- include("partials/navbar") %>
+
+    <main class="pt-24 max-w-7xl mx-auto px-4">
+      <h1 class="text-3xl font-semibold mb-6 text-gray-800">Asociaciones</h1>
+
+      <div class="flex flex-col md:flex-row gap-6">
+        <!-- Formulario a la izquierda -->
+        <form
+          action="/asociaciones/crear"
+          method="post"
+          class="bg-white p-6 rounded shadow md:w-1/2"
+        >
+          <label for="operadorId" class="block mb-2 font-medium"
+            >Operador:</label
+          >
+          <select
+            name="operadorId"
+            required
+            class="w-full mb-4 px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-yellow-400"
+          >
+            <option value="" disabled selected>Selecciona un operador</option>
+            <% operadores.forEach(op => { %>
+            <option value="<%= op.id %>"><%= op.nombre %></option>
+            <% }) %>
+          </select>
+
+          <label for="searchTracker" class="block mb-2 font-medium"
+            >Buscar tracker:</label
+          >
+          <input
+            type="text"
+            id="searchTracker"
+            placeholder="Escribe para filtrar trackers..."
+            class="w-full mb-2 px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-yellow-400"
+          />
+
+          <label for="trackerLabel" class="block mb-2 font-medium"
+            >Tracker:</label
+          >
+          <select
+            id="trackerSelect"
+            name="trackerLabel"
+            required
+            class="w-full mb-4 px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-yellow-400"
+            size="6"
+          >
+            <% trackers.forEach(tracker => { %>
+            <option value="<%= tracker.label %>"><%= tracker.label %></option>
+            <% }) %>
+          </select>
+
+          <button
+            type="submit"
+            class="w-full bg-yellow-400 text-white py-2 rounded hover:bg-yellow-500 transition"
+          >
+            Asociar
+          </button>
+        </form>
+
+        <!-- Lista de asociaciones a la derecha -->
+        <section
+          class="bg-white rounded shadow p-6 md:w-1/2 overflow-auto max-h-[500px]"
+        >
+          <h2 class="text-xl font-semibold mb-4">Asociaciones actuales</h2>
+          <ul class="divide-y divide-gray-200">
+            <% asociaciones.forEach(a => { %>
+            <li class="px-6 py-3 flex justify-between items-center">
+              <div>
+                Tracker:
+                <span class="font-semibold"><%= a.trackerLabel %></span> -
+                Operador:
+                <span class="font-semibold"><%= a.Operador.nombre %></span>
+              </div>
+              <form
+                action="/asociaciones/eliminar/<%= a.id %>"
+                method="post"
+                onsubmit="return confirm('¿Eliminar esta asociación?');"
+              >
+                <button
+                  type="submit"
+                  class="text-red-600 hover:text-red-800 font-semibold"
+                >
+                  Eliminar
+                </button>
+              </form>
+            </li>
+            <% }) %>
+          </ul>
+        </section>
+      </div>
+    </main>
+
+    <script>
+      const searchInput = document.getElementById("searchTracker");
+      const select = document.getElementById("trackerSelect");
+
+      searchInput.addEventListener("input", function () {
+        const filter = this.value.toLowerCase();
+        const options = select.options;
+
+        for (let i = 0; i < options.length; i++) {
+          const optionText = options[i].text.toLowerCase();
+          options[i].style.display = optionText.includes(filter) ? "" : "none";
+        }
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Operadores</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <body class="bg-gray-100 min-h-screen">
+    <%- include("partials/navbar") %>
+
+    <main class="pt-24 max-w-7xl mx-auto px-4">
+      <h1 class="text-3xl font-semibold mb-6 text-gray-800">Operadores</h1>
+
+      <div class="flex flex-col md:flex-row gap-6">
+        <!-- Formulario a la izquierda -->
+        <form
+          action="/operadores/crear"
+          method="post"
+          class="bg-white p-6 rounded shadow md:w-1/2"
+        >
+          <input
+            type="text"
+            name="nombre"
+            placeholder="Nombre"
+            required
+            class="w-full mb-4 px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-yellow-400"
+          />
+          <input
+            type="text"
+            name="telefono"
+            placeholder="Teléfono"
+            required
+            class="w-full mb-4 px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-yellow-400"
+          />
+          <button
+            type="submit"
+            class="w-full bg-yellow-400 text-white py-2 rounded hover:bg-yellow-500 transition"
+          >
+            Crear Operador
+          </button>
+        </form>
+
+        <!-- Lista de operadores a la derecha -->
+        <section
+          class="bg-white rounded shadow p-6 md:w-1/2 overflow-auto max-h-[500px]"
+        >
+          <ul class="divide-y divide-gray-200">
+            <% operadores.forEach(op => { %>
+            <li class="flex justify-between items-center px-6 py-3">
+              <span><%= op.nombre %> - <%= op.telefono %></span>
+              <form
+                action="/operadores/eliminar/<%= op.id %>"
+                method="post"
+                class="inline"
+              >
+                <button
+                  type="submit"
+                  class="text-red-600 hover:text-red-800 font-semibold"
+                >
+                  Eliminar
+                </button>
+              </form>
+            </li>
+            <% }) %>
+          </ul>
+        </section>
+      </div>
+    </main>
+  </body>
+</html>

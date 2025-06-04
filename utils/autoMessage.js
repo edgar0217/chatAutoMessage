@@ -290,7 +290,7 @@ function iniciarEnvioInteligente(adapterProvider) {
 
   setInterval(() => {
     enviarMensajesAgrupados(adapterProvider);
-  }, 5 * 60 * 1000);
+  }, 12 * 60 * 60 * 1000);
 }
 
 // --- FLUJOS (VACÍO, SIN MANUALES) ---

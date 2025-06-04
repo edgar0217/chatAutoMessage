@@ -14,7 +14,7 @@
       <div class="flex flex-col md:flex-row gap-6">
         <!-- Formulario a la izquierda -->
         <form
-          action="/operadores/crear"
+          action="<%= operadorEditar ? ('/operadores/editar/' + operadorEditar.id) : '/operadores/crear' %>"
           method="post"
           class="bg-white p-6 rounded shadow md:w-1/2"
         >
@@ -22,6 +22,7 @@
             type="text"
             name="nombre"
             placeholder="Nombre"
+            value="<%= operadorEditar ? operadorEditar.nombre : '' %>"
             required
             class="w-full mb-4 px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-yellow-400"
           />
@@ -29,15 +30,25 @@
             type="text"
             name="telefono"
             placeholder="Teléfono"
+            value="<%= operadorEditar ? operadorEditar.telefono : '' %>"
             required
             class="w-full mb-4 px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-yellow-400"
           />
-          <button
-            type="submit"
-            class="w-full bg-yellow-400 text-white py-2 rounded hover:bg-yellow-500 transition"
-          >
-            Crear Operador
-          </button>
+          <div class="flex gap-2">
+            <button
+              type="submit"
+              class="w-full bg-yellow-400 text-white py-2 rounded hover:bg-yellow-500 transition"
+            >
+              <%= operadorEditar ? "Guardar cambios" : "Crear Operador" %>
+            </button>
+            <% if (operadorEditar) { %>
+            <a
+              href="/operadores"
+              class="w-full bg-gray-300 text-gray-700 py-2 rounded hover:bg-gray-400 text-center transition"
+              >Cancelar</a
+            >
+            <% } %>
+          </div>
         </form>
 
         <!-- Lista de operadores a la derecha -->
@@ -48,18 +59,25 @@
             <% operadores.forEach(op => { %>
             <li class="flex justify-between items-center px-6 py-3">
               <span><%= op.nombre %> - <%= op.telefono %></span>
-              <form
-                action="/operadores/eliminar/<%= op.id %>"
-                method="post"
-                class="inline"
-              >
-                <button
-                  type="submit"
-                  class="text-red-600 hover:text-red-800 font-semibold"
+              <div class="flex gap-2">
+                <a
+                  href="/operadores/editar/<%= op.id %>"
+                  class="text-blue-600 hover:text-blue-800 font-semibold"
+                  >Editar</a
                 >
-                  Eliminar
-                </button>
-              </form>
+                <form
+                  action="/operadores/eliminar/<%= op.id %>"
+                  method="post"
+                  class="inline"
+                >
+                  <button
+                    type="submit"
+                    class="text-red-600 hover:text-red-800 font-semibold"
+                  >
+                    Eliminar
+                  </button>
+                </form>
+              </div>
             </li>
             <% }) %>
           </ul>

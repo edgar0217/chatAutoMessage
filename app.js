@@ -1,6 +1,9 @@
 const express = require("express");
 const path = require("path");
 const dotenv = require("dotenv");
+const session = require("express-session");
+const { requireLogin } = require("./middlewares/auth");
+const authRoutes = require("./routes/auth");
 
 const sequelize = require("./config/database");
 const operadorRoutes = require("./routes/operadores");
@@ -21,13 +24,29 @@ app.set("views", path.join(__dirname, "views"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Usar rutas
-app.use("/operadores", operadorRoutes);
-app.use("/asociaciones", asociacionRoutes);
-app.use("/trackers", trackerRoutes);
+// Sesiones
+app.use(
+  session({
+    secret: "unaSuperClaveSecretaQueNadieAdivine",
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+      maxAge: 40 * 60 * 1000, // 40 minutos en milisegundos
+      sameSite: "lax",
+    },
+  })
+);
 
-// Ruta raíz
-app.get("/", (req, res) => {
+// Rutas de autenticación (login/logout, no requieren sesión)
+app.use(authRoutes);
+
+// PROTEGER todas las demás rutas:
+app.use("/operadores", requireLogin, operadorRoutes);
+app.use("/asociaciones", requireLogin, asociacionRoutes);
+app.use("/trackers", requireLogin, trackerRoutes);
+
+// Ruta raíz protegida
+app.get("/", requireLogin, (req, res) => {
   res.render("home");
 });
 

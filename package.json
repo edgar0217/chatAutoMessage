@@ -3,12 +3,9 @@
   "version": "1.0.0",
   "description": "Proyecto combinado: bot-whatsapp + express con Sequelize",
   "main": "app.js",
-  "scripts": {
-    "start": "node app.js",
-    "dev": "nodemon app.js",
-    "prestart": "npx eslint . --no-ignore",
-    "pre-copy": "cd .. && npm run copy.lib base-baileys-memory"
-  },
+ "scripts": {
+  "start": "concurrently \"node app.js\" \"node bot.js\""
+},
   "keywords": [],
   "author": "",
   "license": "ISC",
@@ -21,10 +18,12 @@
     "@whiskeysockets/baileys": "6.5.0",
     "axios": "^1.9.0",
     "axios-retry": "^4.5.0",
+    "bcrypt": "^6.0.0",
     "cache-manager": "5.2.4",
     "dotenv": "^16.5.0",
     "ejs": "^3.1.10",
     "express": "^5.1.0",
+    "express-session": "^1.18.1",
     "node-fetch": "^3.3.2",
     "p-limit": "^6.2.0",
     "pg": "^8.16.0",
@@ -33,8 +32,8 @@
     "wa-sticker-formatter": "4.4.4"
   },
   "devDependencies": {
+    "concurrently": "^9.1.2",
     "eslint": "^8.52.0",
-    "eslint-plugin-bot-whatsapp": "latest",
-    "nodemon": "^3.1.10"
+    "eslint-plugin-bot-whatsapp": "latest"
   }
 }

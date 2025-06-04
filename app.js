@@ -14,7 +14,7 @@ const trackerRoutes = require("./routes/trackers");
 dotenv.config();
 
 const app = express();
-const PORT = 4000;
+const PORT_APP = Process.env.PORT;
 
 // Configuración de EJS
 app.set("view engine", "ejs");
@@ -56,7 +56,7 @@ sequelize
   .then(() => {
     console.log("Tablas sincronizadas");
     app.listen(PORT, () => {
-      console.log(`Servidor corriendo en http://localhost:${PORT}`);
+      console.log(`Servidor corriendo en http://localhost:${PORT_APP}`);
     });
   })
   .catch((error) => {

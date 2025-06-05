@@ -3,14 +3,14 @@
   <head>
     <meta charset="UTF-8" />
     <title>Operadores</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="/css/output.css" />
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   </head>
   <body class="bg-gray-100 min-h-screen">
     <%- include("partials/navbar") %>
 
     <main class="pt-24 max-w-7xl mx-auto px-4">
       <h1 class="text-3xl font-semibold mb-6 text-gray-800">Operadores</h1>
-
       <div class="flex flex-col md:flex-row gap-6">
         <!-- Formulario a la izquierda -->
         <form
@@ -84,5 +84,45 @@
         </section>
       </div>
     </main>
+
+    <!-- SWEETALERT2: Mensajes y Confirmación -->
+    <script>
+      // Mensajes flash con SweetAlert2
+      <% if (success && success.length > 0) { %>
+        Swal.fire({
+          icon: 'success',
+          title: '<%= success[0] %>',
+          showConfirmButton: false,
+          timer: 1800
+        });
+      <% } %>
+      <% if (error && error.length > 0) { %>
+        Swal.fire({
+          icon: 'error',
+          title: '<%= error[0] %>',
+          showConfirmButton: false,
+          timer: 2500
+        });
+      <% } %>
+
+      // Confirmación para eliminar
+      document.querySelectorAll('form[action*="eliminar"]').forEach(form => {
+        form.addEventListener("submit", function (e) {
+          e.preventDefault();
+          Swal.fire({
+            title: "¿Seguro?",
+            text: "¡Esta acción no se puede deshacer!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#fbbf24",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Sí, eliminar",
+            cancelButtonText: "Cancelar"
+          }).then((result) => {
+            if (result.isConfirmed) form.submit();
+          });
+        });
+      });
+    </script>
   </body>
 </html>

@@ -4,14 +4,13 @@ const Operador = require("../models/operador.js");
 async function showOperadores(req, res) {
   try {
     const operadores = await Operador.findAll();
-    // operadorEditar solo existe si viene desde la edición, si no es undefined
     res.render("operadores", {
       operadores,
       operadorEditar: res.locals.operadorEditar || undefined,
     });
   } catch (error) {
-    console.error("Error al obtener operadores:", error);
-    res.status(500).send("Error al cargar los operadores");
+    req.flash("error", "Error al cargar los operadores");
+    res.redirect("/operadores");
   }
 }
 
@@ -20,10 +19,11 @@ async function createOperador(req, res) {
   const { nombre, telefono } = req.body;
   try {
     await Operador.create({ nombre, telefono });
+    req.flash("success", "Operador creado exitosamente");
     res.redirect("/operadores");
   } catch (error) {
-    console.error("Error al crear operador:", error);
-    res.status(500).send("Error al crear el operador");
+    req.flash("error", "Error al crear el operador");
+    res.redirect("/operadores");
   }
 }
 
@@ -32,12 +32,11 @@ async function editOperadorForm(req, res, next) {
   try {
     const operadorEditar = await Operador.findByPk(req.params.id);
     if (!operadorEditar) return res.redirect("/operadores");
-    // Guardar operadorEditar en res.locals y llamar a showOperadores
     res.locals.operadorEditar = operadorEditar;
     return showOperadores(req, res, next);
   } catch (error) {
-    console.error("Error al mostrar formulario de edición:", error);
-    res.status(500).send("Error al mostrar formulario");
+    req.flash("error", "Error al mostrar formulario de edición");
+    res.redirect("/operadores");
   }
 }
 
@@ -49,10 +48,11 @@ async function updateOperador(req, res) {
       { nombre, telefono },
       { where: { id: req.params.id } }
     );
+    req.flash("success", "Operador editado exitosamente");
     res.redirect("/operadores");
   } catch (error) {
-    console.error("Error al editar operador:", error);
-    res.status(500).send("Error al editar el operador");
+    req.flash("error", "Error al editar el operador");
+    res.redirect("/operadores");
   }
 }
 
@@ -60,10 +60,11 @@ async function updateOperador(req, res) {
 async function deleteOperador(req, res) {
   try {
     await Operador.destroy({ where: { id: req.params.id } });
+    req.flash("success", "Operador eliminado exitosamente");
     res.redirect("/operadores");
   } catch (error) {
-    console.error("Error al eliminar operador:", error);
-    res.status(500).send("Error al eliminar el operador");
+    req.flash("error", "Error al eliminar el operador, puede que esté en uso");
+    res.redirect("/operadores");
   }
 }
 

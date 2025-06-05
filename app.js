@@ -2,6 +2,7 @@ const express = require("express");
 const path = require("path");
 const dotenv = require("dotenv");
 const session = require("express-session");
+const flash = require("connect-flash");
 const { requireLogin } = require("./middlewares/auth");
 const authRoutes = require("./routes/auth");
 
@@ -14,11 +15,14 @@ const trackerRoutes = require("./routes/trackers");
 dotenv.config();
 
 const app = express();
-const PORT_APP = Process.env.PORT;
+const PORT = process.env.PORT; // (corregido)
+const PORT_APP = process.env.PORT; // para tu log de consola
 
 // Configuración de EJS
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
+
+app.use(express.static(path.join(__dirname, "public")));
 
 // Middleware para parsear JSON y URL encoded
 app.use(express.json());
@@ -36,6 +40,14 @@ app.use(
     },
   })
 );
+
+// Flash messages
+app.use(flash());
+app.use((req, res, next) => {
+  res.locals.success = req.flash("success");
+  res.locals.error = req.flash("error");
+  next();
+});
 
 // Rutas de autenticación (login/logout, no requieren sesión)
 app.use(authRoutes);

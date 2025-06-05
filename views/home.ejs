@@ -3,7 +3,8 @@
   <head>
     <meta charset="UTF-8" />
     <title>Inicio - NavixyApp</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="/css/output.css" />
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   </head>
   <body class="bg-gray-100 min-h-screen">
     <%- include("partials/navbar") %>
@@ -31,5 +32,25 @@
         >
       </div>
     </main>
+
+    <!-- SWEETALERT2: Mensajes Flash -->
+    <script>
+      <% if (success && success.length > 0) { %>
+        Swal.fire({
+          icon: 'success',
+          title: '<%= success[0] %>',
+          showConfirmButton: false,
+          timer: 1800
+        });
+      <% } %>
+      <% if (error && error.length > 0) { %>
+        Swal.fire({
+          icon: 'error',
+          title: '<%= error[0] %>',
+          showConfirmButton: false,
+          timer: 2200
+        });
+      <% } %>
+    </script>
   </body>
 </html>

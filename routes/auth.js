@@ -15,7 +15,8 @@ router.post("/login", async (req, res) => {
   const user = await User.findOne({ where: { username } });
   if (user && (await bcrypt.compare(password, user.password))) {
     req.session.userId = user.id;
-    res.redirect("/");
+    req.flash("success", "¡Inicio de sesión exitoso!");
+    res.redirect("/"); // redirige al home
   } else {
     res.render("login", { error: "Usuario o contraseña incorrectos" });
   }

@@ -15,8 +15,7 @@ const trackerRoutes = require("./routes/trackers");
 dotenv.config();
 
 const app = express();
-const PORT = process.env.PORT; // (corregido)
-const PORT_APP = process.env.PORT; // para tu log de consola
+const PORT = process.env.PORT_APP; // para tu log de consola
 
 // Configuración de EJS
 app.set("view engine", "ejs");
@@ -31,7 +30,7 @@ app.use(express.urlencoded({ extended: true }));
 // Sesiones
 app.use(
   session({
-    secret: "unaSuperClaveSecretaQueNadieAdivine",
+    secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: false,
     cookie: {
@@ -43,9 +42,13 @@ app.use(
 
 // Flash messages
 app.use(flash());
+
+// Middleware global para pasar `currentUser` y `showUserMenu` a todas las vistas
 app.use((req, res, next) => {
   res.locals.success = req.flash("success");
   res.locals.error = req.flash("error");
+  res.locals.currentUser = req.session.username || null; // `currentUser` disponible globalmente
+  res.locals.showUserMenu = false; // Por defecto, ocultamos el menú
   next();
 });
 
@@ -59,7 +62,7 @@ app.use("/trackers", requireLogin, trackerRoutes);
 
 // Ruta raíz protegida
 app.get("/", requireLogin, (req, res) => {
-  res.render("home");
+  res.render("home", { showUserMenu: false }); // Ocultamos el menú en otras vistas
 });
 
 // Sincronizar tablas y luego iniciar servidor
@@ -68,7 +71,7 @@ sequelize
   .then(() => {
     console.log("Tablas sincronizadas");
     app.listen(PORT, () => {
-      console.log(`Servidor corriendo en http://localhost:${PORT_APP}`);
+      console.log(`Servidor corriendo en http://localhost:${PORT}`);
     });
   })
   .catch((error) => {

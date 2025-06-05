@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Mi cuenta</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  </head>
+  <body class="bg-gray-100 min-h-screen">
+    <%- include("partials/navbar") %>
+    <main class="pt-24 max-w-xl mx-auto px-4">
+      <h1 class="text-3xl font-semibold mb-6 text-gray-800">Mi cuenta</h1>
+      <form
+        action="/cuenta"
+        method="post"
+        class="bg-white p-6 rounded shadow space-y-4"
+      >
+        <div>
+          <label class="block font-medium">Usuario</label>
+          <input
+            type="text"
+            name="username"
+            value="<%= username %>"
+            class="w-full px-3 py-2 border rounded"
+            required
+          />
+        </div>
+        <div>
+          <label class="block font-medium">Nueva contraseña</label>
+          <input
+            type="password"
+            name="password"
+            class="w-full px-3 py-2 border rounded"
+            placeholder="Dejar en blanco para no cambiar"
+          />
+        </div>
+        <button
+          type="submit"
+          class="bg-yellow-400 text-white px-4 py-2 rounded hover:bg-yellow-500 transition"
+        >
+          Guardar cambios
+        </button>
+      </form>
+    </main>
+    <script>
+      <% if (success) { %>
+        Swal.fire({
+          icon: "success",
+          title: "<%= success %>",
+          showConfirmButton: false,
+          timer: 1800
+        });
+      <% } %>
+      <% if (error) { %>
+        Swal.fire({
+          icon: "error",
+          title: "<%= error %>",
+          showConfirmButton: false,
+          timer: 2200
+        });
+      <% } %>
+    </script>
+  </body>
+</html>

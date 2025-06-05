@@ -1,8 +1,8 @@
 <nav class="fixed top-0 left-0 w-full bg-gray-800 text-white shadow-md z-50">
   <div class="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
-    <a href="/" class="text-xl font-bold hover:text-yellow-400 transition"
-      >NavixyApp</a
-    >
+    <a href="/" class="text-xl font-bold hover:text-yellow-400 transition">
+      NavixyApp
+    </a>
     <div class="space-x-6 flex items-center">
       <a href="/trackers" class="hover:text-yellow-400 transition">Trackers</a>
       <a href="/operadores" class="hover:text-yellow-400 transition"
@@ -11,12 +11,57 @@
       <a href="/asociaciones" class="hover:text-yellow-400 transition"
         >Asociaciones</a
       >
-      <a
-        href="/logout"
-        class="ml-4 px-4 py-2 bg-yellow-400 rounded hover:bg-yellow-500 text-gray-900 font-semibold transition"
-      >
-        Cerrar sesión
-      </a>
+
+      <!-- Cuenta de usuario -->
+      <% if (currentUser) { %>
+      <!-- Solo muestra esto si currentUser existe -->
+      <div class="flex items-center space-x-4">
+        <!-- Botón de Perfil con icono -->
+        <a
+          href="/cuenta"
+          class="text-white hover:bg-yellow-400 transition px-4 py-2 rounded flex items-center space-x-2"
+        >
+          <!-- Icono de perfil (FontAwesome) -->
+          <svg
+            class="w-5 h-5"
+            fill="currentColor"
+            viewBox="0 0 20 20"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path d="M10 10a4 4 0 100-8 4 4 0 000 8zM2 18a8 8 0 1116 0H2z" />
+          </svg>
+          <span>Perfil</span>
+        </a>
+
+        <!-- Botón de Cerrar sesión -->
+        <a
+          href="javascript:void(0)"
+          onclick="confirmLogout()"
+          class="text-white hover:bg-yellow-400 transition px-4 py-2 rounded bg-red-600"
+        >
+          Cerrar sesión
+        </a>
+      </div>
+      <% } %>
     </div>
   </div>
 </nav>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+  function confirmLogout() {
+    Swal.fire({
+      title: "¿Estás seguro?",
+      text: "Si cierras sesión, se cerrará tu sesión actual",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Sí, cerrar sesión",
+      cancelButtonText: "Cancelar",
+      reverseButtons: true,
+    }).then((result) => {
+      if (result.isConfirmed) {
+        window.location.href = "/logout"; // Redirige a logout si el usuario confirma
+      }
+    });
+  }
+</script>
